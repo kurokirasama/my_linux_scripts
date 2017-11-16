@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+string=$(ping -c 1 -q -w 2 8.8.8.8)
+substring='packets transmitted'
+
+if test "${string#*$substring}" != "$string"
+then
+	echo updating github
+else
+        echo  github not updated
+	exit
+fi
+
+cd ~/scripts
+git add .
+git commit -m "autoupdate"
+git push origin master
