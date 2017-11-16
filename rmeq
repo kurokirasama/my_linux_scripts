@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+for file in *.$2 ; do
+	rm -f "$(basename "$file" .$2).$1"
+done

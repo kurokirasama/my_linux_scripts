@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+grep -ih $1 ~/storage/extSdCard/Directorios/serie*.txt

@@ -1,0 +1,47 @@
+#!/usr/bin/bash
+
+cd ~/manga
+url=$1
+
+baseurl=${url%/*}'/'
+manga=$(echo $url | tr '/' '\n' | sed '5q;d')
+chapter=$(echo $url | tr '/' '\n' | sed '6q;d')
+dirname=$manga'_'$chapter
+
+echo creating directory $dirname...
+mkdir -p $dirname
+cd $dirname
+
+pagenumber=1
+nextpage=$baseurl$pagenumber
+links=''
+
+curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 --compressed -s -k -o page.html $nextpage
+
+echo getting pages links...
+while [ $(stat -c '%s' page.html) -gt 0 ]; do
+	echo page $pagenumber
+	
+	imglink='https:'$(grep "//img" page.html | tr '="' '\n' | tr ">" '\n' | grep "//")
+	
+	links=$links$imglink'\n'
+	
+	let pagenumber=pagenumber+1
+	nextpage=$baseurl$pagenumber
+
+	curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 --compressed -s -k -o page.html $nextpage
+done
+
+rm page.html
+links=${links::-2}
+
+echo downloading pages....
+echo -e $links | parallel --will-cite curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 -s -k -f -O -C -
+
+if [ $(ls -l | wc -l) -lt $(echo -e $links | wc -l) ]; then
+	echo some pages are missing, try again
+fi
+
+echo compressing $dirname...
+cd ..
+7z a -bso0 -bsp0 -sdel $dirname.7z $dirname

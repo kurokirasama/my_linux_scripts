@@ -1,0 +1,53 @@
+#!/usr/bin/bash
+
+cd ~/manga
+url=$1
+
+temp=${url%/*}
+baseurl=$temp'/'
+manga=$(echo $url | tr '/' '\n' | sed '5q;d')
+chapter=$(basename $temp)
+dirname=$manga'_'$chapter
+
+echo creating directory $dirname...
+mkdir -p $dirname
+cd $dirname
+
+pagenumber=1
+nextpage=$baseurl$pagenumber'.html'
+links=''
+
+curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 -s --compressed -o page.html $nextpage
+
+echo getting pages links...
+while [ $(stat -c '%s' page.html) -gt 0 ]; do
+	echo page $pagenumber 
+	
+	imglink=$(grep "lmfcdn" page.html | tr '"' '\n' | tr '>' '\n'| grep "lmfcdn" | grep "compressed" | sed '1q;d')
+	
+	filename=$(basename $imglink)
+	filename=${filename%\?*}
+	
+	links=$links$filename' '$imglink'\n'
+	
+	let pagenumber=pagenumber+1
+	nextpage=$baseurl$pagenumber'.html'
+	#curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 -s -k -f -C - -o $filename $imglink
+
+	curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 -s --compressed -o page.html $nextpage
+done
+
+links=${links::-2}
+rm page.html
+#echo -e $links > links.txt
+echo downloading pages...
+echo -e $links | parallel --colsep " " curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 -s -k -f -C - -o '{1}' '{2}'
+
+if [ $(ls -l | wc -l) -lt $(echo -e $links | wc -l) ]; then
+	echo some pages are missing, try again
+	exit
+fi
+
+echo compressing $dirname...
+cd ..
+7z a -bso0 -bsp0 -sdel $dirname.7z $dirname

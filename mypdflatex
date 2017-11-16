@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+texfot pdflatex -interaction=nonstopmode -synctex=1 "${1%.*}"
