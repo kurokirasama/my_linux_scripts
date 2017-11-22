@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+if [ ! -d /data/data/com.termux/files/usr/var/cache ];then
+	mkdir -p /data/data/com.termux/files/usr/var/cache/
+elif [ ! -d /data/data/com.termux/files/usr/var/cache/apt ];then
+	mkdir -p /data/data/com.termux/files/usr/var/cache/apt/
+elif [ ! -d data/data/com.termux/files/usr/var/cache/apt/archives ];then
+	mkdir -p /data/data/com.termux/files/usr/var/cache/apt/archives/
+elif [ ! -d data/data/com.termux/files/usr/var/cache/apt/archives/partial ];then
+	mkdir -p /data/data/com.termux/files/usr/var/cache/apt/archives/partial/
+fi
