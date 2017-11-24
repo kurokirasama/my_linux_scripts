@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+# USAGE: cd FILESDIRECTORY;renumber name ini z
+# output name1.ext if z~=1
+# output name01.ext if z=1 or nonexistent
+# ini: first number
+
+if [ -z "$3" ]
+    then z=1; 
+else
+    z=$3; 
+fi
+i=$2
+# counts the files to set leading zeros before number | max 1000 files 
+count=$(ls -l * | wc -l) 
+if [ $z -eq 1 ] 
+	then 
+		if [ $count -lt 10 ]
+    		then zeros=1; 
+		else
+		    if [ $count -lt 100 ]
+  		      then zeros=2;
+		    else
+		        zeros=3
+ 		   fi 
+		fi
+fi
+# rename script
+for file in * 
+do
+    mv $file $1$(printf %0"$zeros"d.%s ${i%.*} ${file##*.})
+    let i="$i+1"
+done
