@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-grep -ih $1 ~/storage/extSdCard/Directorios/anime*.txt
+grep -ih $1 ~/storage/extSdCard/Directorios/anime*.txt ~/storage/extSdCard/Directorios/torrent.txt ~/storage/extSdCard/Directorios/downloads.txt
