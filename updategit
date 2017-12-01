@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 
 string=$(ping -c 1 -q -w 2 8.8.8.8)
-substring='packets transmitted'
+substring='0 received'
 
-if test "${string#*$substring}" != "$string"
+if test "${string#*$substring}" == "$string"
 then
 	echo updating github
 else
