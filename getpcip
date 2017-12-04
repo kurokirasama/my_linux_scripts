@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-
-cat ~/termux/myintip.txt
