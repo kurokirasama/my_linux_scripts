@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+sed -i -e 's/â‹…/$\cdot$/g' $1
+sed -i -e 's/â”€/-/g' $1
+sed -i -e 's/âˆž/$\infty$/g' $1
+sed -i -e 's/âŽ¡/|/g' $1
+sed -i -e 's/âŽ¤/|/g' $1
+sed -i -e 's/âŽ¢/|/g' $1
+sed -i -e 's/âŽ¥/|/g' $1
+sed -i -e 's/âŽ£/|/g' $1
+sed -i -e 's/âŽ¦/|/g' $1
