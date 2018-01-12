@@ -21,12 +21,13 @@ curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-del
 
 echo getting pages links...
 while [ $(stat -c '%s' page.html) -gt 0 ]; do
-	echo page $pagenumber 
 	
 	imglink=$(grep "lmfcdn" page.html | tr '"' '\n' | tr '>' '\n'| grep "lmfcdn" | grep "compressed" | sed '1q;d')
 	
 	filename=$(basename $imglink)
 	filename=${filename%\?*}
+	
+	echo page $pagenumber:$filename
 	
 	links=$links$filename' '$imglink'\n'
 	
