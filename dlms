@@ -40,9 +40,12 @@ echo -e $links | parallel --will-cite curl --connect-timeout 5 --max-time 10 --r
 
 if [ $(ls -l | wc -l) -lt $(echo -e $links | wc -l) ]; then
 	echo some pages are missing, try again
+	termux-notification --title "some pages are missing, try again" --vibrate 500,1000 --content ""
 	exit
 fi
 
 echo compressing $dirname...
 cd ..
 7z a -bso0 -bsp0 -sdel $dirname.7z $dirname
+title=$dirname' downloaded'
+termux-notification --title "$title" --vibrate 500,1000 --content ""

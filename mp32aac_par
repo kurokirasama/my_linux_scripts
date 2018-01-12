@@ -6,7 +6,7 @@ if [ $mp3s -gt 0 ]; then
 	parallel --will-cite ffmpeg -loglevel 0 -i {} -c:a aac -b:a 64k {.}.aac ::: *.mp3
 	aacs=$(ls -l *.aac 2>/dev/null | wc -l)
 	if [ $aacs -gt 0 ]; then
-		remove='cd ~/storage/extSdCard/audio_conversion/mp3;rmeq mp3 aac;mv *.aac ~/storage/extSdCard/audio_conversion/aac/;termux-toast -s done;termux-notification-remove 999'
+		remove='cd ~/storage/extSdCard/audio_conversion/mp3;for file in *.$2 ; do rm -f "$(basename "$file" .$2).$1"; done;mv *.aac ~/storage/extSdCard/audio_conversion/aac/;termux-toast -s done;termux-notification-remove 999'
 		content='mp3 files: '$mp3s'. aac files: '$aacs
 		termux-notification --title "mp3 to aac conversion done" --vibrate 500,1000 --content "$content" --id 999 --button1 "remove mp3's" --button1-action "$remove"
 	else
