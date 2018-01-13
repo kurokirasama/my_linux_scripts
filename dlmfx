@@ -24,6 +24,14 @@ while [ $(stat -c '%s' page.html) -gt 0 ]; do
 	
 	imglink=$(grep "lmfcdn" page.html | tr '"' '\n' | tr '>' '\n'| grep "lmfcdn" | grep "compressed" | sed '1q;d')
 	
+	if [ ! "$imglink" ]; then
+		nextpage=$baseurl'0'$pagenumber'.html'
+		
+		curl --connect-timeout 5 --max-time 10 --retry-max-time 40 --retry 5 --retry-delay 0 -s --compressed -o page.html $nextpage
+		
+		imglink=$(grep "lmfcdn" page.html | tr '"' '\n' | tr '>' '\n'| grep "lmfcdn" | grep "compressed" | sed '1q;d')
+	fi
+		
 	filename=$(basename $imglink)
 	filename=${filename%\?*}
 	
