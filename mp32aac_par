@@ -8,11 +8,11 @@ if [ $mp3s -gt 0 ]; then
 	if [ $aacs -gt 0 ]; then
 		remove='cd ~/storage/extSdCard/audio_conversion/mp3;for file in *.$2 ; do rm -f "$(basename "$file" .$2).$1"; done;mv *.aac ~/storage/extSdCard/audio_conversion/aac/;termux-toast -s done;termux-notification-remove 999'
 		content='mp3 files: '$mp3s'. aac files: '$aacs
-		termux-notification --title "mp3 to aac conversion done" --vibrate 500,1000 --content "$content" --id 999 --button1 "remove mp3's" --button1-action "$remove" --priority high --led-on
+		termux-notification --title "mp3 to aac conversion done" --vibrate 500,1000 --content "$content" --id 999 --button1 "remove mp3's" --button1-action "$remove" --priority high --led-on 800
 	else
-	        termux-notification --title "no acc files generated" --vibrate 500,1000 --content "" --priority high --led-on
+	        termux-notification --title "no acc files generated" --vibrate 500,1000 --content "" --priority high --led-on 800
 		exit
 	fi
 else 
-	termux-notification --title "no mp3 files" --vibrate 500,1000 --content "" --priority high --led-on
+	termux-notification --title "no mp3 files" --vibrate 500,1000 --content "" --priority high --led-on 800
 fi
