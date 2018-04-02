@@ -11,3 +11,15 @@ for file in $files ; do
 		cp ~/termux/scripts/$file ~/scripts/$file
 	fi
 done
+
+cd ~/development
+files=$(find *.js)
+for file in $files ; do
+	filedate=$(stat -c %Y ~/development/$file)
+	extfiledate=$(stat -c %Y ~/termux/development/$file)
+	if [ $filedate -gt $extfiledate ]; then
+		cp ~/development/$file ~/termux/development/$file
+	elif [ $extfiledate -gt $filedate ]; then
+		cp ~/termux/development/$file ~/development/$file
+	fi
+done

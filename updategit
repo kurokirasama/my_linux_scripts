@@ -16,9 +16,3 @@ git config credential.helper store
 git add .
 git commit -m "autoupdate"
 git push origin master
-
-cd ~/development
-git config credential.helper store
-git add .
-git commit -m "autoupdate"
-git push origin master
