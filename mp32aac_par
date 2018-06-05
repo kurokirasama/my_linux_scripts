@@ -3,6 +3,7 @@
 cd ~/storage/extSdCard/audio_conversion/mp3
 mp3s=$(ls -l *.mp3 2>/dev/null | wc -l)
 if [ $mp3s -gt 0 ]; then 
+	echo $mp3s mp3 found
 	parallel --will-cite ffmpeg -loglevel 0 -i {} -c:a aac -b:a 64k {.}.aac ::: *.mp3
 	aacs=$(ls -l *.aac 2>/dev/null | wc -l)
 	if [ $aacs -gt 0 ]; then
