@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-string=$(ping -c 1 -q -w 2 8.8.8.8)
+string=$(ping -c 1 -q -w 2 1.1.1.1)
 substring='0 received'
 
 if test "${string#*$substring}" == "$string"
@@ -12,7 +12,7 @@ else
 fi
 
 cd ~/scripts
-git config credential.helper store
+#git config credential.helper store
 git add .
-git commit -m "autoupdate"
+git commit -a -m "autoupdate"
 git push origin master
